@@ -1,0 +1,299 @@
+<hr>
+<p>title: &#39;rapport s2.03&#39;
+author: &#39;Naël VAN HECKE, Elias MARUCA, Jules NEUVILLE&#39;
+date: &#39;22 Mars, 2024&#39;</p>
+<hr>
+<h1 id="sa-2-03-rapport-final">SAÉ 2.03 - Rapport final</h1>
+<p>Ecrit et réalisé par Naël VAN HECKE, Elias MARUCA et Jules NEUVILLE.</p>
+<h1 id="sommaire-">SOMMAIRE :</h1>
+<ul>
+<li><p><a href="#saé-203---rapport-final">1. SAÉ 2.03 - Rapport final</a></p>
+</li>
+<li><p><a href="#sommaire">2. SOMMAIRE :</a></p>
+</li>
+<li><p><a href="#configuration-matérielle-dans-virtualbox">3. Configuration matérielle dans VirtualBox</a></p>
+<ul>
+<li><a href="#installation-os-de-base">3.1. Installation OS de base</a></li>
+<li><a href="#sudo">3.2. Installation sudo</a></li>
+<li><a href="#suppléments-invités">3.3. Suppléments invités</a></li>
+<li><a href="#quelques-questions">3.4. Quelques questions</a></li>
+</ul>
+</li>
+<li><p><a href="#configuration-de-git">4. Configuration de Git</a></p>
+<ul>
+<li><a href="#préliminaire">4.1. Préliminaire</a></li>
+<li><a href="#comparons">4.2. Comparaisons</a></li>
+</ul>
+</li>
+<li><p><a href="#installation-gitea">5. Installation de Gitea</a></p>
+<ul>
+<li><a href="#listes-de-commandes-à-utiliser-pour-réussir-à-installer-gitea">5.1. Listes de commandes à utiliser pour installer gitea</a></li>
+<li><a href="#commande-permettant-de-modifier-le-fichier-gitea">5.2. Commande permettant de modifier le fichier gitea</a></li>
+<li><a href="#interface-graphique-de-gitea">5.3. Interface Graphique de Gitea</a></li>
+<li><a href="#création-avec-le-gui-de-gitea">5.4. Création avec le GUI de Gitea</a></li>
+</ul>
+</li>
+</ul>
+<h1 id="configuration-mat-rielle-dans-virtualbox">Configuration matérielle dans VirtualBox</h1>
+<blockquote>
+<ol>
+<li>Que signifie &quot;64-bit&quot; dans &quot;Debian 64-bit&quot; ?</li>
+</ol>
+</blockquote>
+<ul>
+<li>Un processeur 64 bits est un processeur dont <strong>la largeur des registres est de 64 bits</strong> sur les nombres entiers.</li>
+<li>Un processeur 64 bits <strong>poura traiter plus d&#39;information en même temps</strong> qu&#39;un processeur 32 bits.</li>
+</ul>
+<p><img src="./img/debian.png" alt=""></p>
+<blockquote>
+<ol>
+<li>Quelle est la configuration réseau utilisée par défaut ?</li>
+</ol>
+</blockquote>
+<p>La configuration réseau utilisée par défaut est Network
+Address Translation (c&#39;est-à-dire NAT). Le NAT permet à plusieurs appareils de partager un nombre limité d&#39;adresses IP publiques il améliore donc la sécurité et optimise la gestion des adresses IP.</p>
+<blockquote>
+<ol>
+<li>Quel est le nom du fichier XML contenant la configuration de votre machine ?</li>
+</ol>
+</blockquote>
+<p>Le fichier XML qui contient la configuration de la VM est dans le chemin :</p>
+<pre><code>~<span class="hljs-regexp">/.VirtualBox/</span>Machines<span class="hljs-regexp">/sae203/</span>sae203.xml
+</code></pre><blockquote>
+<ol>
+<li>Sauriez-vous le modifier directement ce fichier de configuration pour mettre 2 processeurs à votre machine ?</li>
+</ol>
+</blockquote>
+<p>Oui, c&#39;est pas trop compliqué. On peut ajouter 1 autre processeur à notre machine en modifiant la valeur count dans le fichier XML.</p>
+<pre><code class="lang-XML">&lt;CPU <span class="hljs-built_in">count</span>=<span class="hljs-string">"1"</span>/&gt;
+</code></pre>
+<pre><code>On remplace le <span class="hljs-number">1</span> par <span class="hljs-number">2</span>
+</code></pre><pre><code class="lang-XML">&lt;CPU <span class="hljs-built_in">count</span>=<span class="hljs-string">"2"</span>/&gt;
+</code></pre>
+<h2 id="installation-os-de-base">Installation OS de base</h2>
+<blockquote>
+<ol>
+<li>Qu&#39;est-ce qu&#39;un fichier ISO bootable ?</li>
+</ol>
+</blockquote>
+<p>Un fichier <strong>.iso</strong> agit comme un cd ou un dvd. \
+Un fichier ISO <strong>bootable</strong> est un fichier conçu pour s&#39;éxecuter au démarrage de l&#39;ordinateur et installer des systèmes d&#39;exploitations par exemple.</p>
+<blockquote>
+<ol>
+<li>Qu&#39;est-ce que MATE ? GNOME ?</li>
+</ol>
+</blockquote>
+<p><strong>MATE</strong> est un <strong>environnement de bureau</strong> libre et open source pour les systèmes d&#39;exploitation de type Unix, dérivé de GNOME 2, il permet de fournir un environnement de bureau stable et traditionnel avec une interface utilisateur intuitive et des applications configurables.</p>
+<p><strong>Gnome (acronyme de GNU Network Object Model Environment)</strong> est lui aussi un environnement de bureau libre et open source pour les systèmes d&#39;exploitation de type Unix.
+Il vise à fournir une interface utilisateur intuitive et accessible à tous ainsi qu&#39;un large éventail d&#39;applications.</p>
+<blockquote>
+<ol>
+<li>Qu&#39;est-ce qu&#39;un serveur web ?</li>
+</ol>
+</blockquote>
+<p>Un serveur web est un ordinateur qui stocke, traite et envoie de sites web aux navigateurs web des utilisateurs. Il est essentiel au fonctionnement du W3C (ou World Wide Web Consortium, est un organisme international qui développe des standards pour le Web afin que les gens puissent communiquer efficacement à travers Internet) car il permet aux internautes d&#39;accéder aux pages web, aux images, aux vidéos et aux autres contenus hébergés sur des serveurs distants.</p>
+<blockquote>
+<ol>
+<li>Qu&#39;est-ce qu&#39;un serveur ssh ?</li>
+</ol>
+</blockquote>
+<p>Un serveur <strong>SSH</strong>, ou <strong>Secure Shell Server</strong>, est un logiciel qui s&#39;exécute sur un ordinateur et qui permet aux utilisateurs de se connecter à cet ordinateur à distance de manière sécurisée.</p>
+<blockquote>
+<ol>
+<li>Qu&#39;est-ce qu&#39;un serveur mandataire ?</li>
+</ol>
+</blockquote>
+<p>Un <strong>serveur mandataire</strong>, aussi appelé <strong>proxy</strong>, est un intermédiaire entre un serveur et un client sur un réseau. Il agit comme un &quot;relais&quot; pour les requêtes et les réponses.</p>
+<h2 id="sudo">Sudo</h2>
+<blockquote>
+<ol>
+<li>Comment peux-ton savoir à quels groupes appartient l’utilisateur <em>user</em> ?</li>
+</ol>
+</blockquote>
+<p>Pour  voir à quels groupes appartient l&#39;utilsateur <em>user</em> on utilise la commande suivante:</p>
+<pre><code><span class="hljs-keyword">grep</span> <span class="hljs-string">"user"</span> <span class="hljs-regexp">/etc/g</span>roup
+</code></pre><p>Ce qui donne:</p>
+<p><img src="./img/grep.png" alt=""></p>
+<p>grep qui permet d&#39;afficher les lignes avec un motif (en l&#39;occurence user)</p>
+<h2 id="suppl-ments-invit-s">Suppléments invités</h2>
+<blockquote>
+<ol>
+<li>Quel est la version du noyau Linux utilisé par votre VM ?</li>
+</ol>
+</blockquote>
+<p>Par défaut le noyau <strong>Linux 5.4</strong> est utilisé.</p>
+<blockquote>
+<ol>
+<li>À quoi servent les suppléments invités ?</li>
+</ol>
+</blockquote>
+<p>Les suppléments invités permettent d&#39;améliorer les performances de notre VM.</p>
+<p>Les installer permet <strong>d’améliorer les performances et intégrations entre la machine hôte et la machine invité</strong> mais aussi apporter de nouvelles fonctionnalités.</p>
+<p>Par exemple, vous pouvez activer le <strong>Presse-papier Bidirectionnel</strong> soit le copier/coller entre la machine hôte et invité.</p>
+<blockquote>
+<ol>
+<li>À quoi sert la commande mount ?</li>
+</ol>
+</blockquote>
+<p>La commande mount permet de <strong>demander au système d&#39;exploitation de rendre un système de fichiers accessible</strong>, à un emplacement spécifié (le point de montage).</p>
+<h2 id="quelques-questions">Quelques Questions</h2>
+<blockquote>
+<ol>
+<li>Qu&#39;est-ce que le Projet Debian ? D&#39;où vient le nom Debian ?</li>
+</ol>
+</blockquote>
+<pre><code>  Combinaison des noms de Ian Murdock et de sa petite amie de l'époque, [<span class="hljs-string">Debra Lynn.</span>](<span class="hljs-link">https://www.debian.org/doc/manuals/project-history/project-history.fr.pdf</span>)
+</code></pre><blockquote>
+<ol>
+<li>Il existe 3 durées de prise en charge (support) de ces versions : la durée minimale, la durée en support long terme (LTS) et la durée en support long terme étendue (ELTS). Quelle sont les durées de ces prises en charge ?</li>
+</ol>
+</blockquote>
+<ul>
+<li>La durée de prise en charge minimale (version stable) est de <a href="https://www.debian.org/releases/index.fr.html">3 ans</a></li>
+<li>La durée de prise en charge à long terme de Debian (Debian Long Term Support – LTS), est un projet pour étendre la durée de vie de toutes les versions stables de Debian à (au moins) <a href="https://www.debian.org/lts/index.fr.html">5 ans</a></li>
+<li>La durée de support long terme étendue quant à elle permet d&#39;ajouter une durée de 1 an (en plus des 5 ans de LTS)</li>
+</ul>
+<blockquote>
+<ol>
+<li>Pendant combien de temps les mises à jour de sécurité seront-elles fournies ?</li>
+</ol>
+</blockquote>
+<ul>
+<li>3 ans pour la version stable</li>
+<li>5 ans pour la version support long terme (LTS)</li>
+<li>1 an de mises à jour de sécurité uniquement (en plus des 5 ans de LTS) - pour la version ELTS (support long terme étendue)</li>
+</ul>
+<blockquote>
+<ol>
+<li>Combien de version au minimum sont activement maintenues par Debian ? Donnez leur nom
+générique (= les types de distribution).</li>
+</ol>
+</blockquote>
+<p><a href="https://www.debian.org/releases/index.fr.html">3 versions</a> sont activement maintenues par Debian : &quot;stable&quot;, &quot;testing&quot;, &quot;unstable&quot;</p>
+<blockquote>
+<ol>
+<li>Chaque distribution majeur possède un nom de code différent. Par exemple, la version majeur
+actuelle (Debian 12) se nomme <em>bookworm</em>. D’où viennent les noms de code données aux
+distributions ?</li>
+</ol>
+</blockquote>
+<p>Les noms de code données aux distributions proviennent du nom des personnages du film d&#39;animation Pixar Toy Story, </p>
+<p>puisque le chef du projet Debian à la sortie de la version 1.1, Bruce Perens, travaillait chez Pixar au commencement du projet.</p>
+<blockquote>
+<ol>
+<li>L’un des atouts de Debian fut le nombre d’architecture ( = processeurs) officiellement prises en
+charge. Combien et lesquelles sont prises en charge par la version Bullseye ?</li>
+</ol>
+</blockquote>
+<p> Il y&#39;a officiellement <a href="https://www.debian.org/ports/">8 architectures</a> prises en charge (amd64, arm64, armel, armhf, i386, mips64el, ppc54el, powerpc64, s390x) dont riscv64 &quot;en test&quot;</p>
+<blockquote>
+<ol>
+<li>Première version avec un nom de code</li>
+</ol>
+</blockquote>
+<pre><code>Le premier nom <span class="hljs-keyword">de</span> code attribué <span class="hljs-keyword">est</span> Buzz annoncé <span class="hljs-keyword">en</span> 1996, c'<span class="hljs-keyword">est</span> <span class="hljs-keyword">la</span> <span class="hljs-keyword">version</span> 0.93
+</code></pre><blockquote>
+<ol>
+<li>Dernièr nom de code attribué</li>
+</ol>
+</blockquote>
+<p>Le dernier nom de code attribué est &quot;Bookworm&quot; annoncé en 2022, c&#39;est Debian 12.</p>
+<h1 id="configuration-de-git">Configuration de Git</h1>
+<p><img src="./img/affichagegitk.png" alt=""></p>
+<pre><code class="lang-sh">git config --global user<span class="hljs-selector-class">.name</span> <span class="hljs-string">"Prénom Nom"</span>
+</code></pre>
+<p>Cette ligne de commande permet d&#39;associer votre nom d&#39;utilisateur à Git.</p>
+<pre><code class="lang-sh"><span class="hljs-attribute">git</span> config --global user.email <span class="hljs-string">"votre<span class="hljs-variable">@email</span>"</span>
+</code></pre>
+<p>Cette ligne de commande permet d&#39;associer votre adresse e-mail à Git.</p>
+<pre><code class="lang-sh">git config --global init<span class="hljs-selector-class">.defaultBranch</span> <span class="hljs-string">"main"</span>
+</code></pre>
+<p>Cette ligne de commande permet d&#39;associer le nom de la branche avec Git (par défaut main)</p>
+<h2 id="pr-liminaire">Préliminaire</h2>
+<blockquote>
+<ol>
+<li>Qu’est-ce que le logiciel gitk ? Comment se lance-t-il ?</li>
+</ol>
+</blockquote>
+<p>Gitk est une interface graphique qui permet de naviguer dans des dépots git plus simplement qu&#39;avec l&#39;affichage terminal\
+Linux: Tapez gitk dans votre terminal.\
+MacOS: Utilisez Spotlight pour rechercher &quot;Gitk&quot; et lancez l&#39;application.\
+Windows: Recherchez &quot;Gitk&quot; dans le menu Démarrer et lancez l&#39;application.</p>
+<blockquote>
+<p>1.2 Qu’est-ce que le logiciel git-gui ? Comment se lance-t-il ?</p>
+</blockquote>
+<p>Git-gui est un logiciel d&#39;interface graphique (GUI) pour le système de contrôle de version Git. Il permet d&#39;effectuer des opérations comme créer et cloner des dépôts et
+afficher l&#39;historique des commits</p>
+<h2 id="comparons">Comparons</h2>
+<blockquote>
+<ol>
+<li>Pourquoi avez-vous choisi ce logiciel ?</li>
+</ol>
+</blockquote>
+<p>Il y&#39;a une interface intuitive pour une utilisation facile. et des outils optimisés pour accélérer le développement (en général).</p>
+<blockquote>
+<ol>
+<li>Comment l’avez vous installé ?</li>
+</ol>
+</blockquote>
+<p>GitKraken est assez simple à installer il y&#39;a juste un fichier en .deb qu&#39;il faut utiliser en mettant cette commande:</p>
+<pre><code class="lang-sh">sudo dpkg -<span class="hljs-selector-tag">i</span> <span class="hljs-string">"fichier"</span>.deb
+</code></pre>
+<blockquote>
+<ol>
+<li>Comparer-le aux outils inclus avec git (et installé précédemment) ainsi qu’avec ce qui serait fait en ligne de commande pure : fonctionnalités avantages, inconvénients…</li>
+</ol>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Avantages</th>
+<th>Inconvénients</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Git</td>
+<td>Puissants, flexibles, légers,  intégrés.</td>
+<td>Courbe d&#39;apprentissage, manque de visuel,  CLI complexe.</td>
+</tr>
+<tr>
+<td>GitKraken</td>
+<td>Interface intuitive, collaboration, visualisation, facile à apprendre.</td>
+<td>Moins flexible, installation nécessaire, version gratuite limitéé</td>
+</tr>
+<tr>
+<td>Ligne de Commande Pure</td>
+<td>Puissants, flexibles, légers, intégrés.</td>
+<td>Syntaxe complexe, erreurs possibles, pas de visuel.</td>
+</tr>
+</tbody>
+</table>
+<p>Conclusion:</p>
+<p>Débutants: GitKraken\
+Expérimentés: Outils Git Natifs\
+Avancés: Ligne de Commande</p>
+<h1 id="installation-gitea">Installation Gitea</h1>
+<h2 id="listes-de-commandes-utiliser-pour-r-ussir-installer-gitea">Listes de commandes à utiliser pour réussir à installer Gitea</h2>
+<p><img src="./img/historiquegitea.png" alt=""></p>
+<pre><code class="lang-sh">sudo su <span class="hljs-selector-id">#Se</span> connecter en super-utilisateur (root)
+apt install mariadb-server <span class="hljs-selector-id">#Installer</span> Maria-DB
+adduser --system --group --disabled-password --shell /bin/bash git  #Crée un utilisateur <span class="hljs-string">"git"</span> sans mot de passe.
+mysql -u root -<span class="hljs-selector-tag">p</span> <span class="hljs-selector-id">#Se</span> connecte à MySQL en tant que <span class="hljs-string">"root"</span>
+nano /etc/systemd/system/gitea<span class="hljs-selector-class">.service</span> <span class="hljs-selector-id">#Ouvre</span> le fichier de configuration systemd
+systemctl start gitea #Démarre le service Gitea manuellement
+nano /etc/nginx/sites-available/gitea <span class="hljs-selector-id">#Ouvre</span> le fichier de configuration Nginx
+</code></pre>
+<h2 id="commande-permettant-de-modifier-le-fichier-gitea">Commande permettant de modifier le fichier Gitea</h2>
+<pre><code class="lang-sh">sudo ln -s <span class="hljs-meta-keyword">/etc/</span>nginx<span class="hljs-meta-keyword">/sites-available/</span>gitea <span class="hljs-meta-keyword">/etc/</span>nginx<span class="hljs-meta-keyword">/sites-enabled/</span> <span class="hljs-meta">#Crée un lien symbolique pour activer la configuration Nginx </span>
+sudo apt install ufw <span class="hljs-meta">#Installe le pare-feu UFW (si pas déjà installé)</span>
+sudo ufw enable <span class="hljs-meta">#Installe le pare-feu UFW (si pas déjà installé)</span>
+sudo ufw allow <span class="hljs-number">80</span>/tcp <span class="hljs-meta">#Autorise le trafic HTTP (port 80) via UFW</span>
+sudo ufw allow <span class="hljs-number">443</span>/tcp <span class="hljs-meta">#Idem mais pour HTTPS (port 443)</span>
+</code></pre>
+<p><img src="./img/nano.PNG" alt=""></p>
+<h2 id="interface-graphique-de-gitea">Interface graphique de Gitea</h2>
+<p><img src="./img/giteamain.PNG" alt=""></p>
+<h2 id="cr-ation-avec-le-gui-de-gitea">Création avec le GUI de Gitea</h2>
+<p><img src="./img/testcrea.PNG" alt=""></p>
