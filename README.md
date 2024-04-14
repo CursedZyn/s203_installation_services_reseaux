@@ -1,12 +1,9 @@
 # Compilation de Markdown en PDF et HTML
-
-## PDF:
+# PDF:
 ```sh
 pandoc -s -N --toc --metadata title="Sommaire" rapport.md -o rapport.pdf
 ```
-
-##  HTML
-
+#  HTML
 ```sh
 pandoc -s -N --toc --metadata title="Sommaire" rapport.md -o rapport.html
 ```
